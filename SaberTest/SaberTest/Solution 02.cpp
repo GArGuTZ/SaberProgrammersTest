@@ -38,9 +38,10 @@ void RemoveDups(char* _str)
 		}
 	}
 
-	strcpy(_str, newStr);
+	// Copy result
+	strcpy_s(_str, inputLength + 1, newStr);
 
-	delete [] newStr;
+	delete[] newStr;
 
 	return;
 }
