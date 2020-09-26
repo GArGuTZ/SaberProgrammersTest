@@ -1,19 +1,42 @@
-#include <iostream>
+п»ї#include <iostream>
+#include <string>
 
 struct ListNode {
 	ListNode *      prev;
 	ListNode *      next;
-	ListNode *      rand; // указатель на произвольный элемент данного списка, либо NULL
+	ListNode *      rand; // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РїСЂРѕРёР·РІРѕР»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚ РґР°РЅРЅРѕРіРѕ СЃРїРёСЃРєР°, Р»РёР±Рѕ NULL
 	std::string     data;
 };
 
 class List {
 public:
-	void Serialize(FILE * file);  // сохранение в файл (файл открыт с помощью fopen(path, "wb"))
-	void Deserialize(FILE * file);  // загрузка из файла (файл открыт с помощью fopen(path, "rb"))
+	List ();
+	List (ListNode _beginner);
+	~List ();
+
+	int get_size() const;
+	bool is_empty() const;
+	void clear();
+	void push_front(const std::string &_input);
+	void push_back(const std::string &_input);
+	void pop_front();
+	void pop_back();
+	std::string front() const;
+	std::string back() const;
+
+	void Serialize(FILE* file);  // СЃРѕС…СЂР°РЅРµРЅРёРµ РІ С„Р°Р№Р» (С„Р°Р№Р» РѕС‚РєСЂС‹С‚ СЃ РїРѕРјРѕС‰СЊСЋ fopen(path, "wb"))
+	void Deserialize(FILE* file);  // Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р° (С„Р°Р№Р» РѕС‚РєСЂС‹С‚ СЃ РїРѕРјРѕС‰СЊСЋ fopen(path, "rb"))
+
+	friend std::ostream &operator<< (std::ostream &_out, const List &_list);
 
 private:
-	ListNode *      head;
-	ListNode *      tail;
-	int       count;
+	ListNode* head_;
+	ListNode* tail_;
+	int count_;
+
+	List (List &_obj) {}
+	List &operator= (List &_obj)
+	{
+		return *this;
+	}
 };
