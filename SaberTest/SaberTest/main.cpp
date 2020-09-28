@@ -1,7 +1,11 @@
+#define _CRT_SECURE_NO_DEPRECATE
+
 #include "Solution 01.h"
 #include "Solution 02.h"
 #include "Solution 03.h"
+
 #include <bitset>
+#include <cstdio>
 
 
 void main()
@@ -86,5 +90,28 @@ void main()
 	l.push_back(a2);
 	l.push_back(a2);
 	std::cout << l << std::endl;
+
+	std::cout << "		Test FILES		" << std::endl;
+
+	char* path = "Task03SerializedList.txt";
+	FILE* fileToWrite = fopen(path, "wb");
+	l.Serialize(fileToWrite);
+	fclose(fileToWrite);
+
+	FILE* fileToRead = fopen(path, "rb");
+	//l.Deserialize(fileToRead);
+	fclose(fileToRead);
+	/*
+	FILE* f1;
+	f1 = fopen("Task03SerializedList.txt", "w");
+	fwrite("somedata", sizeof(char), sizeof("somedata"), f1);
+	fclose(f1);
+
+	FILE* f2B;
+	f2B = fopen("Task03SerializedListBINARY.bin", "wb");
+	fwrite("some3data", sizeof(char), sizeof("some3data"), f2B);
+	fclose(f2B);
+	*/
+
 	return;
 }

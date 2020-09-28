@@ -155,6 +155,67 @@ std::string List::back() const
 	return tail_->data;
 }
 
+void List::set_random(int _nodeIndex, int _randIndex)
+{
+	if (_nodeIndex <= 0 || _randIndex <= 0 || _nodeIndex > count_ || _randIndex > count_)
+	{
+		return;
+	}
+
+	int counter = 1;
+	ListNode* thisNode = NULL;
+	ListNode* randNode = NULL;
+	if (counter == _nodeIndex)
+	{
+		thisNode = head_;
+	}
+	if (counter == _randIndex)
+	{
+		randNode = head_;
+	}
+	if (thisNode != NULL && randNode != NULL)
+	{
+		thisNode->rand = randNode;
+		return;
+	}
+
+	ListNode *nextNode = head_->next;
+	while (nextNode != tail_)
+	{
+		++counter;
+		if (counter == _nodeIndex)
+		{
+			thisNode = nextNode;
+		}
+		if (counter == _randIndex)
+		{
+			randNode = nextNode;
+		}
+		if (thisNode != NULL && randNode != NULL)
+		{
+			thisNode->rand = randNode;
+			return;
+		}
+		nextNode = nextNode->next;
+	}
+	++counter;
+	if (counter == _nodeIndex)
+	{
+		thisNode = tail_;
+	}
+	if (counter == _randIndex)
+	{
+		randNode = tail_;
+	}
+	if (thisNode != NULL && randNode != NULL)
+	{
+		thisNode->rand = randNode;
+		return;
+	}
+
+	return;
+}
+
 std::ostream &operator<< (std::ostream &_out, const List &_list)
 {
 	if (_list.is_empty())
@@ -182,4 +243,107 @@ std::ostream &operator<< (std::ostream &_out, const List &_list)
 	
 	_out << "List Size: " << _list.count_ << ", de-facto: " << counter << std::endl;
 	return _out;
+}
+
+void List::Serialize(FILE* _file)
+{
+	if (_file == NULL)
+	{
+		std::cout << "File not found or path is wrong" << std::endl;
+		return;
+	}
+	std::map<ListNode*, int> addresses;
+
+
+	if (head_ == NULL || tail_ == NULL)
+	{
+		return;
+	}
+	if (head_->next == NULL || tail_->prev == NULL) // Primitive Case
+	{
+		unsigned int N (head_->data.size());
+
+		std::cout << N << std::endl;
+		//char d[10];
+		//_itoa_s(N, d, 10);
+		fwrite(&N, sizeof(N), 1, _file);           // Size of data
+		fwrite(head_->data.c_str(), 1, N, _file);  // Data
+
+		std::map<ListNode*, int> experimentMap = { { head_, 1 } };
+		std::cout << "Map value: " << experimentMap[tail_] << std::endl;
+		for (auto it = experimentMap.begin(); it != experimentMap.end(); ++it)
+		{
+			std::cout << "Node Address: " << it->first << ", Index " << it->second << std::endl;
+		}
+
+
+
+
+		fflush(_file);
+		return;
+	}
+	// Filling the map with indexes of Nodes
+
+	int counter = 1;
+	std::map<ListNode*, int> counterMap = { { head_, counter } };
+	ListNode *nextNode = head_->next;
+	while (nextNode != tail_)
+	{
+		++counter;
+		counterMap[nextNode] = counter;
+		nextNode = nextNode->next;
+	}
+	++counter;
+	counterMap[tail_] = counter;
+
+	for (auto it = counterMap.begin(); it != counterMap.end(); ++it)
+	{
+		std::cout << "Node Address: " << it->first << ", Index " << it->second << std::endl;
+	}
+
+	// Filling second map with pairs (thisNode,randNode) if rand != NULL
+
+	counter = 1;
+	std::map<int, int> incidenceMap;
+	if (head_->rand != NULL)
+	{
+		incidenceMap[counter] = counterMap[head_->rand];
+	}
+	nextNode = head_->next;
+	while (nextNode != tail_)
+	{
+		++counter;
+		if (nextNode->rand != NULL)
+		{
+			incidenceMap[counter] = counterMap[nextNode->rand];
+		}
+		nextNode = nextNode->next;
+	}
+	++counter;
+	if (tail_->rand != NULL)
+	{
+		incidenceMap[counter] = counterMap[tail_->rand];
+	}
+
+	for (auto it = incidenceMap.begin(); it != incidenceMap.end(); ++it)
+	{
+		std::cout << "Node Index: " << it->first << ", Have rand on index: " << it->second << std::endl;
+	}
+
+	return;
+}
+
+void List::Deserialize(FILE* _file)
+{
+	std::string new_s("");
+	unsigned int N(0);
+	fread(&N, sizeof(N), 1, _file);
+	char* c(new char[N + 1]);
+	fread(c, 1, N, _file);
+	c[N] = '\0';
+	new_s = c;
+	delete[] c;
+	std::cout << N << std::endl;
+	std::cout << new_s << std::endl;
+	return;
 }

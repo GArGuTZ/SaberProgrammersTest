@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <map>
 
 struct ListNode {
 	ListNode *      prev;
@@ -23,9 +24,10 @@ public:
 	void pop_back();
 	std::string front() const;
 	std::string back() const;
+	void set_random(int _nodeIndex, int _randIndex);
 
-	void Serialize(FILE* file);  // сохранение в файл (файл открыт с помощью fopen(path, "wb"))
-	void Deserialize(FILE* file);  // загрузка из файла (файл открыт с помощью fopen(path, "rb"))
+	void Serialize(FILE* _file);  // сохранение в файл (файл открыт с помощью fopen(path, "wb"))
+	void Deserialize(FILE* _file);  // загрузка из файла (файл открыт с помощью fopen(path, "rb"))
 
 	friend std::ostream &operator<< (std::ostream &_out, const List &_list);
 
