@@ -112,6 +112,22 @@ void List::pop_back()
 	--count_;
 	ListNode* deletedNode = tail_;
 	tail_ = tail_->prev;
+
+	// Nulling rands->deletingNode in List
+	ListNode *prevNode = tail_;
+	while (prevNode != head_)
+	{
+		if (prevNode->rand != NULL && prevNode->rand == deletedNode)
+		{
+			prevNode->rand = NULL;
+		}
+		prevNode = prevNode->prev;
+	}
+	if (head_->rand != NULL && head_->rand == deletedNode)
+	{
+		head_->rand = NULL;
+	}
+
 	delete deletedNode;
 	tail_->next = NULL;
 }
@@ -133,6 +149,22 @@ void List::pop_front()
 	--count_;
 	ListNode* deletedNode = head_;
 	head_ = head_->next;
+
+	// Nulling rands->deletingNode in List
+	ListNode *nextNode = head_;
+	while (nextNode != tail_)
+	{
+		if (nextNode->rand != NULL && nextNode->rand == deletedNode)
+		{
+			nextNode->rand = NULL;
+		}
+		nextNode = nextNode->next;
+	}
+	if (tail_->rand != NULL && tail_->rand == deletedNode)
+	{
+		tail_->rand = NULL;
+	}
+
 	delete deletedNode;
 	head_->prev = NULL;
 }

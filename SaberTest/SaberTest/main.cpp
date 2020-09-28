@@ -89,6 +89,7 @@ void main()
 	l.push_back(a1);
 	l.push_back(a2);
 	l.push_back(a2);
+	l.set_random(1, 2);
 	std::cout << l << std::endl;
 
 	std::cout << "		Test FILES		" << std::endl;
