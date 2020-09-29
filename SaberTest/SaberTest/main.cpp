@@ -75,7 +75,7 @@ void main()
 	delete[] fourthString;
 
 
-	std::cout << "     THIRD SOLUTION     " << std::endl;
+	std::cout << "		THIRD SOLUTION		" << std::endl;
 	/////////////////////// THIRD SOLUTION TESTING ///////////////
 
 	std::string a1 = "somedata";
@@ -89,8 +89,9 @@ void main()
 	l.push_back(a1);
 	l.push_back(a2);
 	l.push_back(a2);
-	l.set_random(1, 2);
-	std::cout << l << std::endl;
+	//l.push_back(a2);
+	l.set_random(2, 1);
+	std::cout << "Created List:" << std::endl << l << std::endl;
 
 	std::cout << "		Test FILES		" << std::endl;
 
@@ -99,9 +100,14 @@ void main()
 	l.Serialize(fileToWrite);
 	fclose(fileToWrite);
 
+	List l3;
+	std::cout << "Created List:" << std::endl << l3 << std::endl;
 	FILE* fileToRead = fopen(path, "rb");
 	//l.Deserialize(fileToRead);
+	l3.Deserialize(fileToRead);
 	fclose(fileToRead);
+	std::cout << "Readed List:" << std::endl << l3 << std::endl;
+
 	/*
 	FILE* f1;
 	f1 = fopen("Task03SerializedList.txt", "w");
