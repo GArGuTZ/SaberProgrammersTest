@@ -1,7 +1,11 @@
+#define _CRT_SECURE_NO_DEPRECATE
+
 #include "Solution 01.h"
 #include "Solution 02.h"
 #include "Solution 03.h"
+
 #include <bitset>
+#include <cstdio>
 
 
 void main()
@@ -69,5 +73,52 @@ void main()
 	RemoveDups(fourthString);
 	std::cout << "fourthStringRemovedDups: " << fourthString << std::endl;
 	delete[] fourthString;
+
+
+	std::cout << "		THIRD SOLUTION		" << std::endl;
+	/////////////////////// THIRD SOLUTION TESTING ///////////////
+
+	std::string a1 = "somedata";
+	ListNode LN1 = { NULL, NULL, NULL, a1 };
+	std::string a2 = "some2data";
+	ListNode LN2 = { NULL, NULL, NULL, a2 };
+	//LN.data = a;
+	//std::cout << "LN: " << LN.next << std::endl;
+
+	List l;
+	l.push_back(a1);
+	l.push_back(a2);
+	l.push_back(a2);
+	//l.push_back(a2);
+	l.set_random(2, 1);
+	std::cout << "Created List:" << std::endl << l << std::endl;
+
+	std::cout << "		Test FILES		" << std::endl;
+
+	char* path = "Task03SerializedList.txt";
+	FILE* fileToWrite = fopen(path, "wb");
+	l.Serialize(fileToWrite);
+	fclose(fileToWrite);
+
+	List l3;
+	std::cout << "Created List:" << std::endl << l3 << std::endl;
+	FILE* fileToRead = fopen(path, "rb");
+	//l.Deserialize(fileToRead);
+	l3.Deserialize(fileToRead);
+	fclose(fileToRead);
+	std::cout << "Readed List:" << std::endl << l3 << std::endl;
+
+	/*
+	FILE* f1;
+	f1 = fopen("Task03SerializedList.txt", "w");
+	fwrite("somedata", sizeof(char), sizeof("somedata"), f1);
+	fclose(f1);
+
+	FILE* f2B;
+	f2B = fopen("Task03SerializedListBINARY.bin", "wb");
+	fwrite("some3data", sizeof(char), sizeof("some3data"), f2B);
+	fclose(f2B);
+	*/
+
 	return;
 }
