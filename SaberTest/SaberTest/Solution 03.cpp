@@ -449,6 +449,7 @@ void List::Deserialize(FILE* _file)
 	}
 
 	unsigned int dataLength(0);
+	std::map<int, ListNode*> indexMap;
 	std::string newData("");
 	for (int i = 1; i <= amount; ++i)
 	{
@@ -464,6 +465,7 @@ void List::Deserialize(FILE* _file)
 		std::cout << ",	Data: " << newData << std::endl;
 
 		push_back(newData);
+		indexMap[i] = tail_;
 	}
 
 
@@ -472,12 +474,15 @@ void List::Deserialize(FILE* _file)
 	std::cout << "Rands: " << randsCount << std::endl;
 	int nodeIndex = 0;
 	int nodeRandom = 0;
+	std::map<int, int> incidenceMap;
 	for (int i = 1; i <= randsCount; ++i)
 	{
 		fread(&nodeIndex, sizeof(nodeIndex), 1, _file);
 		fread(&nodeRandom, sizeof(nodeRandom), 1, _file);
 		std::cout << "Node Index: " << nodeIndex << ", Have rand on index: " << nodeRandom << std::endl;
-		set_random(nodeIndex, nodeRandom);
+		//set_random(nodeIndex, nodeRandom);
+		incidenceMap[nodeIndex] = nodeRandom;
+		indexMap[nodeIndex]->rand = indexMap[nodeRandom];
 	}
 
 	return;
