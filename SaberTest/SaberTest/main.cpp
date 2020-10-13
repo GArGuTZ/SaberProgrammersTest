@@ -86,9 +86,10 @@ void main()
 	//std::cout << "LN: " << LN.next << std::endl;
 
 	List l;
-	l.push_back(a1);
-	l.push_back(a2);
-	l.push_back(a2);
+	//l.push_back(a1);
+	//l.push_back(a2);
+	//l.push_back(a2);
+	//l.push_back(a1);
 	//l.push_back(a2);
 	l.set_random(2, 1);
 	std::cout << "Created List:" << std::endl << l << std::endl;
