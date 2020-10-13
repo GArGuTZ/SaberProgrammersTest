@@ -291,22 +291,20 @@ void List::Serialize(FILE* _file)
 		return;
 	}
 
+	std::cout << "Serializing file " << _file << std::endl;
+	std::cout << "Nodes: " << count_ << std::endl;
+
 	if (head_ == NULL || tail_ == NULL)
 	{
-		std::cout << "Serializing file " << _file << std::endl;
-
-		std::cout << "Nodes: " << count_ << std::endl;
 		fwrite(&count_, sizeof(count_), 1, _file);         // Number of Nodes = 0
 
 		fflush(_file);
 		return;
 	}
 
-	std::cout << "Serializing file " << _file << std::endl;
-	// Filling the map with indexes of Nodes
-
-	std::cout << "Nodes: " << count_ << std::endl;
 	fwrite(&count_, sizeof(count_), 1, _file);         // Number of Nodes
+
+	// Writing List & filling the map with indexes of Nodes
 
 	int counter = 0;
 	std::map<ListNode*, int> counterMap;
@@ -331,7 +329,7 @@ void List::Serialize(FILE* _file)
 		std::cout << "Node Address: " << it->first << ", Index " << it->second << std::endl;
 	}
 
-	// Filling second map with pairs (thisNode,randNode) if rand != NULL
+	// Filling second map with index pairs (thisNode, randNode) if rand != NULL
 
 	unsigned int randsCount = 0;
 	counter = 0;
@@ -346,6 +344,8 @@ void List::Serialize(FILE* _file)
 		}
 		nextNode = nextNode->next;
 	}
+
+	// Writing rands indices
 
 	randsCount = incidenceMap.size();
 	std::cout << "Rands: " << randsCount << std::endl;
@@ -370,7 +370,6 @@ void List::Deserialize(FILE* _file)
 	}
 
 	std::cout << "Deserializing file " << _file << std::endl;
-	clear();
 
 	int amount = 0;
 	fread(&amount, sizeof(amount), 1, _file);
@@ -383,40 +382,15 @@ void List::Deserialize(FILE* _file)
 	}
 	if (amount == 0)
 	{
+		clear();
 		std::cout << "Readed List is empty" << std::endl;
 		return;
 	}
-	if (amount == 1) // Primitive Case
-	{
-		unsigned int dataLength(0);
-		fread(&dataLength, sizeof(dataLength), 1, _file);
-		std::cout << "Data length: " << dataLength;
+	clear();
 
-		std::string newData("");
-		char* readedString(new char[dataLength + 1]);
-		fread(readedString, 1, dataLength, _file);
-		readedString[dataLength] = '\0';
-		newData = readedString;
-		delete[] readedString;
-		std::cout << ",	Data: " << newData << std::endl;
+	// Reading List & filling map with pairs (nodeIndex, nodeAddress)
 
-		head_ = new ListNode{ NULL, NULL, NULL, newData };
-		tail_ = head_;
-		++count_;
-
-		unsigned int randsCount(0);
-		fread(&randsCount, sizeof(randsCount), 1, _file);
-		std::cout << "Rands: " << randsCount << std::endl;
-
-		if (randsCount == 1) // => rand == head_
-		{
-			head_->rand = head_;
-		}
-
-		return;
-	}
-
-	unsigned int dataLength(0);
+	unsigned int dataLength = 0;
 	std::map<int, ListNode*> indexMap;
 	std::string newData("");
 	for (int i = 1; i <= amount; ++i)
@@ -436,20 +410,18 @@ void List::Deserialize(FILE* _file)
 		indexMap[i] = tail_;
 	}
 
+	// Filling rands in List using map
 
-	unsigned int randsCount(0);
+	unsigned int randsCount = 0;
 	fread(&randsCount, sizeof(randsCount), 1, _file);
 	std::cout << "Rands: " << randsCount << std::endl;
 	int nodeIndex = 0;
 	int nodeRandom = 0;
-	std::map<int, int> incidenceMap;
 	for (int i = 1; i <= randsCount; ++i)
 	{
 		fread(&nodeIndex, sizeof(nodeIndex), 1, _file);
 		fread(&nodeRandom, sizeof(nodeRandom), 1, _file);
 		std::cout << "Node Index: " << nodeIndex << ", Have rand on index: " << nodeRandom << std::endl;
-		//set_random(nodeIndex, nodeRandom);
-		incidenceMap[nodeIndex] = nodeRandom;
 		indexMap[nodeIndex]->rand = indexMap[nodeRandom];
 	}
 
