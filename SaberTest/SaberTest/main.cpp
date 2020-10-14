@@ -77,50 +77,64 @@ void main()
 
 	std::cout << "		THIRD SOLUTION		" << std::endl;
 	/////////////////////// THIRD SOLUTION TESTING ///////////////
+	std::string data1 = "somedata";
+	std::string data2 = "some2data";
+	std::string data3 = "5";
+	std::string data4 = "";
 
-	std::string a1 = "somedata";
-	ListNode LN1 = { NULL, NULL, NULL, a1 };
-	std::string a2 = "some2data";
-	ListNode LN2 = { NULL, NULL, NULL, a2 };
-	//LN.data = a;
-	//std::cout << "LN: " << LN.next << std::endl;
-
-	List l;
-	l.push_back(a2);
-	l.push_back(a2);
-	l.push_back(a2);
-	//l.push_back(a1);
-	//l.push_back(a2);
-	l.set_random(2, 1);
-	l.set_random(1, 3);
-	std::cout << "Created List:" << std::endl << l << std::endl;
-
-	std::cout << "		Test FILES		" << std::endl;
-
-	char* path = "Task03SerializedList.txt";
-	FILE* fileToWrite = fopen(path, "wb");
-	l.Serialize(fileToWrite);
+	// Serialize Empty List
+	List emptyL;
+	std::cout << "Created Empty List" << std::endl;
+	char* pathToEmpty = "Task03EmptyList.txt";
+	FILE* fileToWrite = fopen(pathToEmpty, "wb");
+	emptyL.Serialize(fileToWrite);
 	fclose(fileToWrite);
 
-	List l3;
-	std::cout << "Created List:" << std::endl << l3 << std::endl;
-	FILE* fileToRead = fopen(path, "rb");
-	//l.Deserialize(fileToRead);
-	l3.Deserialize(fileToRead);
+	List emptyLRead;
+	emptyLRead.push_back(data1);
+	FILE* fileToRead = fopen(pathToEmpty, "rb");
+	emptyLRead.Deserialize(fileToRead);
 	fclose(fileToRead);
-	std::cout << "Readed List:" << std::endl << l3 << std::endl;
+	std::cout << "Readed List:" << std::endl << emptyLRead << std::endl;
 
-	/*
-	FILE* f1;
-	f1 = fopen("Task03SerializedList.txt", "w");
-	fwrite("somedata", sizeof(char), sizeof("somedata"), f1);
-	fclose(f1);
+	// Serialize 4-nodes List
+	List list1;
+	list1.push_back(data1);
+	list1.push_back(data2);
+	list1.push_back(data4);
+	list1.push_back(data3);
+	list1.set_random(2, 1);
+	list1.set_random(1, 3);
+	std::cout << "Created List:" << std::endl << list1 << std::endl;
+	
+	char* path1 = "Task03SerializedList1.txt";
+	fileToWrite = fopen(path1, "wb");
+	list1.Serialize(fileToWrite);
+	fclose(fileToWrite);
 
-	FILE* f2B;
-	f2B = fopen("Task03SerializedListBINARY.bin", "wb");
-	fwrite("some3data", sizeof(char), sizeof("some3data"), f2B);
-	fclose(f2B);
-	*/
+	List list1Read;
+	fileToRead = fopen(path1, "rb");
+	list1Read.Deserialize(fileToRead);
+	fclose(fileToRead);
+	std::cout << "Readed List:" << std::endl << list1Read << std::endl;
+
+	// Serialize 1-node List
+	List list2;
+	list2.push_back(data2);
+	list2.set_random(1, 1);
+	list2.set_random(9, 12);
+	std::cout << "Created List:" << std::endl << list2 << std::endl;
+
+	char* path2 = "Task03SerializedList2.txt";
+	fileToWrite = fopen(path2, "wb");
+	list2.Serialize(fileToWrite);
+	fclose(fileToWrite);
+
+	List list2Read;
+	fileToRead = fopen(path2, "rb");
+	list2Read.Deserialize(fileToRead);
+	fclose(fileToRead);
+	std::cout << "Readed List:" << std::endl << list2Read << std::endl;
 
 	return;
 }

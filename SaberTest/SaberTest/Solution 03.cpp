@@ -30,7 +30,7 @@ void List::clear()
 		delete head_;
 		tail_ = NULL;
 
-		std::cout << std::endl << "List Cleared" << std::endl;
+		//std::cout << std::endl << "List Cleared" << std::endl;
 
 		return;
 	}
@@ -50,7 +50,7 @@ void List::clear()
 	delete head_;
 	tail_ = NULL;
 
-	std::cout << std::endl << "List Cleared" << std::endl;
+	//std::cout << std::endl << "List Cleared" << std::endl;
 
 	return;
 }
